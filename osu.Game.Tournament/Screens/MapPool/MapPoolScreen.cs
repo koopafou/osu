@@ -279,11 +279,24 @@ namespace osu.Game.Tournament.Screens.MapPool
             {
                 FillFlowContainer<TournamentBeatmapPanel>? currentFlow = null;
                 string? currentMods = null;
+                string? previousModPrefix = null;
                 int flowCount = 0;
 
                 foreach (var b in CurrentMatch.Value.Round.Value.Beatmaps)
                 {
-                    if (currentFlow == null || (LadderInfo.SplitMapPoolByMods.Value && currentMods != b.Mods))
+                    int indexModPrefix = b.Mods.IndexOf('_');
+                    string? currentModPrefix = null;
+                    if (indexModPrefix != -1)
+                    {
+                      currentModPrefix = b.Mods.Substring(0, indexModPrefix);
+                    }
+
+                    bool changedModPrefix = (previousModPrefix != currentModPrefix);
+                    previousModPrefix = currentModPrefix;
+
+                    if (currentFlow == null
+                        || (LadderInfo.SplitMapPoolByMods.Value && currentMods != b.Mods)
+                        || (!LadderInfo.SplitMapPoolByMods.Value && changedModPrefix))
                     {
                         mapFlows.Add(currentFlow = new FillFlowContainer<TournamentBeatmapPanel>
                         {
