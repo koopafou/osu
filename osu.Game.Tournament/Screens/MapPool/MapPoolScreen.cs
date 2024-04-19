@@ -34,6 +34,7 @@ namespace osu.Game.Tournament.Screens.MapPool
         private OsuButton buttonBlueBan = null!;
         private OsuButton buttonRedPick = null!;
         private OsuButton buttonBluePick = null!;
+        private OsuButton buttonPurplePick = null!;
 
         private ScheduledDelegate? scheduledScreenChange;
 
@@ -91,6 +92,12 @@ namespace osu.Game.Tournament.Screens.MapPool
                             Text = "Blue Pick",
                             Action = () => setMode(TeamColour.Blue, ChoiceType.Pick)
                         },
+                        buttonPurplePick = new TourneyButton
+                        {
+                            RelativeSizeAxes = Axes.X,
+                            Text = "Purple Pick",
+                            Action = () => setMode(TeamColour.Purple, ChoiceType.Pick)
+                        },
                         new ControlPanel.Spacer(),
                         new TourneyButton
                         {
@@ -145,6 +152,7 @@ namespace osu.Game.Tournament.Screens.MapPool
             buttonBlueBan.Colour = setColour(pickColour == TeamColour.Blue && pickType == ChoiceType.Ban);
             buttonRedPick.Colour = setColour(pickColour == TeamColour.Red && pickType == ChoiceType.Pick);
             buttonBluePick.Colour = setColour(pickColour == TeamColour.Blue && pickType == ChoiceType.Pick);
+            buttonPurplePick.Colour = setColour(pickColour == TeamColour.Purple && pickType == ChoiceType.Pick);
 
             static Color4 setColour(bool active) => active ? Color4.White : Color4.Gray;
         }
