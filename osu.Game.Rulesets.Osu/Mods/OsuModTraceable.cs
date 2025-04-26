@@ -72,8 +72,8 @@ namespace osu.Game.Rulesets.Osu.Mods
 
         private void applySliderState(DrawableSlider slider)
         {
-            ((PlaySliderBody)slider.Body.Drawable).AccentColour = slider.AccentColour.Value.Opacity(0);
-            ((PlaySliderBody)slider.Body.Drawable).BorderColour = slider.AccentColour.Value;
+            var body = (PlaySliderBody)slider.Body.Drawable;
+            body.AccentColour = body.AccentColour.Opacity(0);
         }
     }
 }
