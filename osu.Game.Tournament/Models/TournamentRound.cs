@@ -8,6 +8,14 @@ using osu.Framework.Bindables;
 
 namespace osu.Game.Tournament.Models
 {
+    public class TournamentRoundGroup
+    {
+        public readonly Bindable<string> Name = new Bindable<string>(string.Empty);
+
+        [JsonProperty]
+        public readonly BindableList<RoundBeatmap> Beatmaps = new BindableList<RoundBeatmap>();
+    }
+
     /// <summary>
     /// A tournament round, containing many matches, generally executed in a short time period.
     /// </summary>
@@ -21,7 +29,7 @@ namespace osu.Game.Tournament.Models
         public readonly BindableInt BanCount = new BindableInt(1) { Default = 1, MinValue = 0, MaxValue = 5 };
 
         [JsonProperty]
-        public readonly BindableList<RoundBeatmap> Beatmaps = new BindableList<RoundBeatmap>();
+        public readonly BindableList<TournamentRoundGroup> RoundGroups = new BindableList<TournamentRoundGroup>();
 
         public readonly Bindable<DateTimeOffset> StartDate = new Bindable<DateTimeOffset> { Value = DateTimeOffset.UtcNow };
 
