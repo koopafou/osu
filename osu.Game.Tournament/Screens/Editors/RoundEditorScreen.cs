@@ -153,8 +153,6 @@ namespace osu.Game.Tournament.Screens.Editors
                 {
                     public TournamentRoundGroup Model { get; }
 
-                    private readonly Bindable<string> name = new Bindable<string>(string.Empty);
-
                     public RoundGroupRow(TournamentRound round, TournamentRoundGroup roundGroup)
                     {
                         Model = roundGroup;
@@ -192,7 +190,7 @@ namespace osu.Game.Tournament.Screens.Editors
                                     {
                                         LabelText = "Name",
                                         Width = 0.30f,
-                                        Current = name,
+                                        Current = Model.Name,
                                     },
                                     new SettingsButton
                                     {

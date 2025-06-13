@@ -2,6 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 using System.Linq;
+using System.Collections.Generic;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
@@ -23,6 +24,7 @@ namespace osu.Game.Tournament.Screens.MapPool
     public partial class MapPoolScreen : TournamentMatchScreen
     {
         private FillFlowContainer<FillFlowContainer<FillFlowContainer<TournamentBeatmapPanel>>> mapFlows = null!;
+        private List<TournamentBeatmapPanel> flattenedBeatmapPanels = null!;
 
         [Resolved]
         private TournamentSceneManager? sceneManager { get; set; }
@@ -40,6 +42,7 @@ namespace osu.Game.Tournament.Screens.MapPool
         [BackgroundDependencyLoader]
         private void load(MatchIPCInfo ipc)
         {
+            flattenedBeatmapPanels = new List<TournamentBeatmapPanel>();
             InternalChildren = new Drawable[]
             {
                 new TourneyVideo("mappool")
@@ -184,9 +187,7 @@ namespace osu.Game.Tournament.Screens.MapPool
 
         protected override bool OnMouseDown(MouseDownEvent e)
         {
-            var mapGroups = mapFlows.Select(f => f.FirstOrDefault(m => m.ReceivePositionalInputAt(e.ScreenSpaceMousePosition)));
-            var maps = mapGroups.Select(f => f.FirstOrDefault(m => m.ReceivePositionalInputAt(e.ScreenSpaceMousePosition)));
-            var map = maps.FirstOrDefault(m => m != null);
+            var map = flattenedBeatmapPanels.FirstOrDefault(m => m.ReceivePositionalInputAt(e.ScreenSpaceMousePosition));
 
             if (map != null)
             {
@@ -262,6 +263,7 @@ namespace osu.Game.Tournament.Screens.MapPool
         private void updateDisplay()
         {
             mapFlows.Clear();
+            flattenedBeatmapPanels.Clear();
 
             if (CurrentMatch.Value == null)
                 return;
@@ -310,12 +312,14 @@ namespace osu.Game.Tournament.Screens.MapPool
                             flowCount = 1;
                         }
 
-                        currentFlow.Add(new TournamentBeatmapPanel(b.Beatmap, b.Mods)
+                        TournamentBeatmapPanel panel = new TournamentBeatmapPanel(b.Beatmap, b.Mods)
                         {
                             Anchor = Anchor.TopCentre,
                             Origin = Anchor.TopCentre,
                             Height = 42,
-                        });
+                        };
+                        currentFlow.Add(panel);
+                        flattenedBeatmapPanels.Add(panel);
                     }
                 }
             }

@@ -8,6 +8,7 @@ using osu.Framework.Bindables;
 
 namespace osu.Game.Tournament.Models
 {
+    [Serializable]
     public class TournamentRoundGroup
     {
         public readonly Bindable<string> Name = new Bindable<string>(string.Empty);
