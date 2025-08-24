@@ -241,7 +241,8 @@ namespace osu.Game.Tournament
         private async Task<bool> addRoundBeatmaps()
         {
             var beatmapsRequiringPopulation = ladder.Rounds
-                                                    .SelectMany(r => r.Beatmaps)
+                                                    .SelectMany(r => r.RoundGroups)
+                                                    .SelectMany(rg => rg.Beatmaps)
                                                     .Where(b => (b.Beatmap == null || b.Beatmap?.OnlineID == 0) && b.ID > 0).ToList();
 
             if (beatmapsRequiringPopulation.Count == 0)
