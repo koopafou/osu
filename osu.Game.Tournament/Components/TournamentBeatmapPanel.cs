@@ -22,7 +22,7 @@ namespace osu.Game.Tournament.Components
     {
         public readonly IBeatmapInfo? Beatmap;
 
-        private readonly string mod;
+        private readonly string mods;
 
         public const float HEIGHT = 50;
 
@@ -30,10 +30,12 @@ namespace osu.Game.Tournament.Components
 
         private Box flash = null!;
 
-        public TournamentBeatmapPanel(IBeatmapInfo? beatmap, string mod = "")
+        private FillFlowContainer modsContainer = null!;
+
+        public TournamentBeatmapPanel(IBeatmapInfo? beatmap, string mods = "")
         {
             Beatmap = beatmap;
-            this.mod = mod;
+            this.mods = mods;
 
             Width = 400;
             Height = HEIGHT;
@@ -114,18 +116,42 @@ namespace osu.Game.Tournament.Components
                     Blending = BlendingParameters.Additive,
                     Alpha = 0,
                 },
+                modsContainer = new FillFlowContainer
+                {
+                    RelativeSizeAxes = Axes.Both,
+                    Direction = FillDirection.Horizontal,
+                    Depth = -1,
+                    Padding = new MarginPadding
+                    {
+                        Right = 10
+                    }
+                }
             });
 
-            if (!string.IsNullOrEmpty(mod))
+            if (!string.IsNullOrEmpty(mods))
             {
-                AddInternal(new TournamentModIcon(mod)
+                for (int i = 0; i < mods.Length;)
                 {
-                    Anchor = Anchor.CentreRight,
-                    Origin = Anchor.CentreRight,
-                    Margin = new MarginPadding(10),
-                    Width = 60,
-                    RelativeSizeAxes = Axes.Y,
-                });
+                    bool isOptional = mods.Substring(i, 1) == "(";
+                    string mod = isOptional ? mods.Substring(i + 1, 2) : mods.Substring(i, 2);
+
+                    var icon = new TournamentModIcon(mod)
+                    {
+                        Anchor = Anchor.CentreRight,
+                        Origin = Anchor.CentreRight,
+                        Width = 60,
+                        RelativeSizeAxes = Axes.Y
+                    };
+
+                    if (isOptional)
+                    {
+                        icon.Alpha = 0.6F;
+                    }
+
+                    modsContainer.Insert(mods.Length - i, icon);
+
+                    i += isOptional ? 4 : 2;
+                }
             }
         }
 

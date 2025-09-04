@@ -7,6 +7,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Game.Graphics;
 using osu.Game.Tournament.Models;
+using osuTK.Graphics;
 
 namespace osu.Game.Tournament.Screens.Ladder.Components
 {
@@ -32,14 +33,14 @@ namespace osu.Game.Tournament.Screens.Ladder.Components
                 {
                     textDescription = new TournamentSpriteText
                     {
-                        Colour = TournamentGame.TEXT_COLOUR,
+                        Colour = Color4.Black,
                         Origin = Anchor.TopCentre,
                         Anchor = Anchor.TopCentre
                     },
                     textName = new TournamentSpriteText
                     {
                         Font = OsuFont.Torus.With(weight: FontWeight.Bold),
-                        Colour = TournamentGame.TEXT_COLOUR,
+                        Colour = Color4.Black,
                         Origin = Anchor.TopCentre,
                         Anchor = Anchor.TopCentre
                     },
