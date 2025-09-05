@@ -115,12 +115,12 @@ namespace osu.Game.Tournament.Components
                     Colour = Color4.Gray,
                     Blending = BlendingParameters.Additive,
                     Alpha = 0,
+                    Depth = -1,
                 },
                 modsContainer = new FillFlowContainer
                 {
                     RelativeSizeAxes = Axes.Both,
                     Direction = FillDirection.Horizontal,
-                    Depth = -1,
                     Padding = new MarginPadding
                     {
                         Right = 10
