@@ -117,7 +117,7 @@ namespace osu.Game.Rulesets.Osu.Objects.Drawables
         {
 					piece.FadeColour(new Color4(195, 195, 195, 255));
 						var rng = new LegacyRandom((int)Math.Round(HitObject.Position.X * 1000000f + HitObject.Position.Y * 1000f));
-						double gammaSkinTroll = 0.8f + 0.4f * rng.NextDouble();
+						double gammaSkinTroll = 0.6f + 0.4f * rng.NextDouble();
             using (piece.BeginDelayedSequence((InitialLifetimeOffset - OsuHitWindows.MISS_WINDOW) * gammaSkinTroll))
                 piece.FadeColour(Color4.White, 100);
         }
