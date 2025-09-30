@@ -9,6 +9,7 @@ using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Input.Events;
 using osu.Framework.Threading;
+using osu.Game.Beatmaps;
 using osu.Game.Graphics.UserInterface;
 using osu.Game.Tournament.Components;
 using osu.Game.Tournament.IPC;
@@ -39,6 +40,8 @@ namespace osu.Game.Tournament.Screens.MapPool
         private OsuButton buttonPurplePick = null!;
 
         private ScheduledDelegate? scheduledScreenChange;
+
+        public IBeatmapInfo? lastSelectedMap { get; set; }
 
         [BackgroundDependencyLoader]
         private void load(MatchIPCInfo ipc)
@@ -143,7 +146,7 @@ namespace osu.Game.Tournament.Screens.MapPool
 
             // if bans have already been placed, beatmap changes result in a selection being made automatically
             if (beatmap.NewValue?.OnlineID > 0)
-                addForBeatmap(beatmap.NewValue.OnlineID);
+                addForBeatmap(beatmap.NewValue);
         }
 
         private void setMode(TeamColour colour, ChoiceType choiceType)
@@ -200,7 +203,7 @@ namespace osu.Game.Tournament.Screens.MapPool
             if (map != null)
             {
                 if (e.Button == MouseButton.Left && map.Beatmap?.OnlineID > 0)
-                    addForBeatmap(map.Beatmap.OnlineID);
+                    addForBeatmap(map.Beatmap);
                 else
                 {
                     var existing = CurrentMatch.Value?.PicksBans.FirstOrDefault(p => p.BeatmapID == map.Beatmap?.OnlineID);
@@ -224,16 +227,17 @@ namespace osu.Game.Tournament.Screens.MapPool
             setNextMode();
         }
 
-        private void addForBeatmap(int beatmapId)
+        private void addForBeatmap(IBeatmapInfo beatmapInfo)
         {
+            lastSelectedMap = beatmapInfo;
             if (CurrentMatch.Value?.Round.Value == null)
                 return;
 
-            if (CurrentMatch.Value.Round.Value.RoundGroups.All(rg => rg.Beatmaps.All(b => b.Beatmap?.OnlineID != beatmapId)))
+            if (CurrentMatch.Value.Round.Value.RoundGroups.All(rg => rg.Beatmaps.All(b => b.Beatmap?.OnlineID != beatmapInfo.OnlineID)))
                 // don't attempt to add if the beatmap isn't in our pool
                 return;
 
-            if (CurrentMatch.Value.PicksBans.Any(p => p.BeatmapID == beatmapId))
+            if (CurrentMatch.Value.PicksBans.Any(p => p.BeatmapID == beatmapInfo.OnlineID))
                 // don't attempt to add if already exists.
                 return;
 
@@ -241,7 +245,7 @@ namespace osu.Game.Tournament.Screens.MapPool
             {
                 Team = pickColour,
                 Type = pickType,
-                BeatmapID = beatmapId
+                BeatmapID = beatmapInfo.OnlineID
             });
 
             setNextMode();

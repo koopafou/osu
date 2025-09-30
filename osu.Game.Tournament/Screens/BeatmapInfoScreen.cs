@@ -4,6 +4,7 @@
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
+using osu.Game.Beatmaps;
 using osu.Game.Beatmaps.Legacy;
 using osu.Game.Tournament.Components;
 using osu.Game.Tournament.IPC;
@@ -41,6 +42,15 @@ namespace osu.Game.Tournament.Screens
         {
             SongBar.FadeInFromZero(300, Easing.OutQuint);
             SongBar.Beatmap = beatmap.NewValue;
+        }
+
+        public void manualBeatmapChanged(IBeatmapInfo? beatmapInfo)
+        {
+            if (null != beatmapInfo)
+            {
+                SongBar.FadeInFromZero(300, Easing.OutQuint);
+                SongBar.Beatmap = beatmapInfo;
+            }
         }
     }
 }

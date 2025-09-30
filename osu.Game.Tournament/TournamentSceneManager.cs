@@ -177,6 +177,12 @@ namespace osu.Game.Tournament
             screens.Add(temporaryScreen = screen);
         }
 
+        public T? GetScreen<T>()
+        {
+            var target = screens.FirstOrDefault(s => s.GetType() == typeof(T));
+            return (T?)(Object?)target;
+        }
+
         public void SetScreen(Type screenType)
         {
             temporaryScreen?.Expire();

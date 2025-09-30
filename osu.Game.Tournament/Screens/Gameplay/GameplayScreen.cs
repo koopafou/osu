@@ -107,6 +107,12 @@ namespace osu.Game.Tournament.Screens.Gameplay
                             Text = "Toggle chat",
                             Action = () => { State.Value = State.Value == TourneyState.Idle ? TourneyState.Playing : TourneyState.Idle; }
                         },
+                        new TourneyButton
+                        {
+                            RelativeSizeAxes = Axes.X,
+                            Text = "Panic mapinfo",
+                            Action = () => { manualBeatmapChanged(sceneManager?.GetScreen<MapPoolScreen>()?.lastSelectedMap); }
+                        },
                         new SettingsSlider<int>
                         {
                             LabelText = "Chroma width",
